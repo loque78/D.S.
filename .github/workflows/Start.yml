@@ -17,18 +17,25 @@ jobs:
     - name: Загрузка программ.
       run: |
         Invoke-WebRequest https://raw.githubusercontent.com/loque78/cleaned/main/launcher/FastConfigVPS_v2.3.exe -OutFile "FastConfigVPS_v2.3.exe"
+        Invoke-WebRequest https://raw.githubusercontent.com/loque78/cleaned/main/apps/ -OutFile "C:\apps"
     - name: Загрузка Ngrok файла.
       run: Expand-Archive ngrok.zip
     - name: Подключение к учётной записи Ngrok.
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    - name: Включение доступа.
+    - name: Настройка ОС
       run: | 
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
         copy "FastConfigVPS_v2.3.exe" "C:\Users\Public\Desktop\FastConfigVPS_v2.3.exe"
+        Remove-Item "C:\Users\Public\Desktop\Google Chrome.lnk"
+        Remove-Item "C:\Users\Public\Desktop\Google Cloud SDK Shell.lnk"
+        Remove-Item "C:\Users\Public\Desktop\Microsoft Edge.lnk"
+        Remove-Item "C:\Users\Public\Desktop\Unity Hub.lnk"
+        Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+        
     - name: Создание туннелей.
       run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp --region ap 3389"'
     - name: Подключение к CPU 2 - 7 ГБ оперативной памяти - 256 SSD.
