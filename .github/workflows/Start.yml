@@ -17,7 +17,7 @@ jobs:
     - name: Загрузка программ.
       run: |
         Invoke-WebRequest https://raw.githubusercontent.com/loque78/cleaned/main/launcher/FastConfigVPS_v2.3.exe -OutFile "FastConfigVPS_v2.3.exe"
-        Invoke-WebRequest https://raw.githubusercontent.com/loque78/cleaned/main/apps/ -OutFile "C:\apps"
+        Invoke-WebRequest https://raw.githubusercontent.com/loque78/cleaned/main/AnyDesk.exe -OutFile "C:\Users\Public\Desktop\AnyDesk.exe"
     - name: Загрузка Ngrok файла.
       run: Expand-Archive ngrok.zip
     - name: Подключение к учётной записи Ngrok.
